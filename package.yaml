@@ -23,11 +23,14 @@ dependencies:
 - base >= 4.7 && < 5
 - bytestring
 - cassava
+- containers
 - directory
 - filepath
 - formatting
 - Frames >= 0.6.1
 - hashable
+- inline-c
+- inline-c-cpp
 - refined >= 0.4.4
 - say
 - temporary
@@ -46,6 +49,7 @@ ghc-options:
 
 library:
   source-dirs: src
+  extra-libraries: _lightgbm
 
 tests:
   HaskellGBM-test:
