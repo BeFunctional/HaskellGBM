@@ -32,15 +32,18 @@ C.context (C.cppCtx <> lgbmCtx)
 C.include "LightGBM/c_api.h"
 
 lgbmDatasetCreateFromFile
-  :: FilePath -> ByteString -> DatasetHandle -> Ptr DatasetHandle -> IO Bool
-lgbmDatasetCreateFromFile filename parameters reference out =
-  fmap isNoError $ withCString filename $ \filename' ->
-    useAsCString parameters $ \parameters' -> [C.exp| int {
+  :: FilePath -> ByteString -> DatasetHandle -> IO (Maybe DatasetHandle)
+lgbmDatasetCreateFromFile filename parameters reference = alloca $ \dataset ->
+  whenLGBM
+    (withCString filename $ \filename' ->
+      useAsCString parameters $ \parameters' -> [C.exp| int {
   LGBM_DatasetCreateFromFile($(const char *filename'),
                              $(const char *parameters'),
                              $(const DatasetHandle reference),
-                             $(DatasetHandle *out))
+                             $(DatasetHandle *dataset))
 } |]
+    )
+    dataset
 
 lgbmDatasetFree :: DatasetHandle -> IO Bool
 lgbmDatasetFree handle = fmap
