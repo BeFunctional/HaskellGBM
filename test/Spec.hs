@@ -4,6 +4,9 @@ import           LightGBM.Wrapper.Dataset
 import           LightGBM.Wrapper.Bindings
 
 main :: IO ()
-main = withDataset "test/test.csv" $ \handle -> do
+main = withDataset "examples/binary_classification/binary.train" $ \handle -> do
   _ <- lgbmDatasetDumpText handle "test/test.dump.csv"
-  putStrLn "Test suite not yet implementedd"
+  numFeature <- lgbmDatasetGetNumFeature handle
+  numData <- lgbmDatasetGetNumData handle
+  print numFeature
+  print numData
