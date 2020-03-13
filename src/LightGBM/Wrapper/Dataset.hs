@@ -13,5 +13,5 @@ import           Control.Exception              ( bracket )
 
 withDataset :: FilePath -> (DatasetHandle -> IO a) -> IO a
 withDataset filePath go = do
-  Just dataset <- lgbmDatasetCreateFromFile filePath "" nullPtr
+  Right dataset <- lgbmDatasetCreateFromFile filePath "" nullPtr
   bracket (return dataset) lgbmDatasetFree go
